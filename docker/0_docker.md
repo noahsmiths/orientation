@@ -53,4 +53,32 @@ After specifying our base image, we must next specify where we want to make our 
 
     WORKDIR /app
 
-Next up, we need to copy the files over themselves. To do this, we use the `COPY` instruction, with argument
+Next up, we need to copy the files over themselves. To do this, we use the `COPY` instruction, which takes two arguments: The source directory which is a path on our computer, and the target directory which is a path in our image. Our source directory is specified relative to where the Dockerfile is located, and since it's in the same directory as the rest of our program files, we can just use `.` for the path. Similarly, because we're already located in `/app` in our image, we can specify the current directory as the target with `.` Combined, this results in
+
+    COPY . .
+Great! Now, we have all of our source files in our image.
+
+### 3. Install our dependencies.
+With projects in Node, all of our dependencies are stored in the `package.json` file, so all we need to do is run the command `npm install` in the same directory and our program's dependencies will be taken care of. The instruction we use in our Dockerfile is `RUN`, followed by the command.
+
+    RUN npm install
+
+But wait, there's more! While it's not included in our `package.json`, we'll also need to install typescript so we can compile our program. We can do that with the command `npm install typescript -g` (the `-g` flag tells npm to install it globally so we can use it anywhere).
+
+    RUN npm install typescript -g
+
+### 4. Building our Program.
+To build a TypeScript program, we'll need to invoke the typescript compiler through the `tsc` command. Similarly to before, we just use the `RUN` instruction again.
+
+    RUN tsc
+
+This will produce a file called `index.js` in our `/app` directory in our image, which is a compiled version of the `index.ts` file and ready for execution.
+After this command, our files will be set up exactly as we need them, and we won't need any more configuration on that front.
+### 5. Run it.
+Wait, I thought containers ran, not images! Why is this included in our Dockerfile? Correct! Images themselves don't run, they're run by containers. However, when we tell create a container to run an image, it needs to know *what to run*. That's what we're going to specify here. The Dockerfile instruction for this is called `CMD` for "command", and it'll be the first thing the container runs when we create it. As such, **there can only be one `CMD` instruction in a Dockerfile**.
+
+Just as we'd run our program with `node index.js` on our computer, we'll specify the same in the Dockerfile.
+
+    CMD node index.js
+
+And there you have it!
