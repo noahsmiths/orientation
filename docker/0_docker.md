@@ -22,7 +22,7 @@ That's fundamentally what Docker does. In Docker jargon, the "snapshot" of the e
 ## Images
 Well, an image is just supposed to be a snapshot of your environment, right? So couldn't you create one by just freezing your computer in time and copying all of its contents over? Good idea! Unfortunately, that won't quite work - for one, that would take up way too much space. Instead, we'll want to distill only the *key aspects* of our environment that we need to run our program, and build an image from there.
 
-Luckily, a simple tool for doing exactly this: The **Dockerfile**. A Dockerfile is just a step-by-step guide to creating an image, where you specify exactly what files to put where, what commands to run, and a few other things. It typically lives in the root directory of your project, and is simply called "Dockerfile" without the quotes.
+Luckily, Docker has a simple tool for doing exactly this: The **Dockerfile**. A Dockerfile is just a step-by-step guide to creating an image, where you specify exactly what files to put where, what commands to run, and a few other things. It typically lives in the root directory of your project, and is simply called "Dockerfile" without the quotes.
 
 Going back to our previous scenario, let's lay out the exact steps we'd need to execute in a brand new environment to get our program working.
 
