@@ -17,7 +17,7 @@ Imagine the following scenario: You've just finished writing a program, and now 
 
 Wouldn't it be easier if you could take a snapshot of an environment with everything you needed perfectly set, and then run that entire thing in a self-***contained*** environment on the server, or any other computer for that matter?
 
-That's fundamentally what Docker does. In Docker jargon, the "snapshot" of the environment is called an **image** and the "self-contained environment" that runs that image is the **container**. Or, flipping those definitions, **a container is a running instance of an image** and an **image is a read-only snapshot of an environment**. By these definitions, you can see that an image must exist first before a container ever can. So then, how can you create a docker image? I'm glad you asked.
+That's fundamentally what Docker does. In Docker jargon, the "snapshot" of the environment is called an **image** and the "self-contained environment" that runs that image is the **container**. Or, flipping those definitions, **a container is a running instance of an image** and an **image is a snapshot of an environment**. By these definitions, you can see that an image must exist first before a container ever can. So then, how can you create a docker image? I'm glad you asked.
 
 ## Images
 Well, an image is just supposed to be a snapshot of your environment, right? So couldn't you create one by just freezing your computer in time and copying all of its contents over? Good idea! Unfortunately, that won't quite work - for one, that would take up way too much space. Instead, we'll want to distill only the *key aspects* of our environment that we need to run our program, and build an image from there.
