@@ -40,7 +40,7 @@ Now, let's translate those instructions into an equivalent Dockerfile!
 
 [Insert stacks of images graphic here]
 
-Now, you might be thinking: If we're building this image from the ground up, what's our starting point? What are we even building from? The answer is a **base image**! An image is just a snapshot of some environment, so what we can do is take one that already exists as a base, add on our changes, and then we'll have an image that does exactly what we need. Luckily for us, the good people over at Node made us an image conveniently named `node`. Specifically, we want to use version 20, so we can append it to the name with a semicolon, like this `node:20`.
+Now, you might be thinking: If we're building this image from the ground up, what's our starting point? What are we even building from? The answer is a **base image**! An image is just a snapshot of some environment, so what we can do is take one that already exists as a base, add on our changes, and then we'll have an image that does exactly what we need. Luckily for us, the good people over at Node made us an image conveniently named `node` that includes everything you need to run a Node program. Specifically, we want to use version 20, so we can append it to the name with a semicolon, like this `node:20`.
 
 Now, in our Dockerfile, we use the `FROM` instruction to tell it what image to use as the base, like this:
 
