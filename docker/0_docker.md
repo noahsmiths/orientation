@@ -6,7 +6,7 @@
 "So what's this whole Docker thing anyways, and is it even really that important?"
 Fair question, and while the answer to that first part is a little complicated, the answer to the second part is definitely **YES**, it is that important!
 
-Docker is a key technology, both in this course and out in industry, and is used heavily by many companies. Within this course, it's what powers tools including Dev Containers and Kubernetes/OpenShift, so understanding Docker is key to understanding them, too. In industry, even if you aren't using these exact technologies, you'll often find software engineers using Docker some way some how, and knowing how to use it will come in handy.
+Docker is a key technology, both in this course and out in industry, and is used heavily by many companies. Within this course, it's what powers tools including Dev Containers and Kubernetes/OpenShift, so understanding Docker is key to understanding them, too. In industry, even if you aren't using these exact technologies, you'll often find software engineers using Docker some way or another, and knowing how to use it will come in handy.
 
 Anyways, now that you're (hopefully) convinced, let's dive in!
 
@@ -32,7 +32,9 @@ Going back to our previous scenario, let's lay out the exact steps we'd need to 
  4. Build our program.
  5. Run it.
 
-Now, line by line let's translate that into an equivalent Dockerfile.
+For the sake of this example, there exists a repository with a sample program already written linked [here](https://github.com/noahsmiths/Docker-Hello-World-Example). If you want to try Docker out and follow along, clone the repo and edit the Dockerfile according to the following steps.
+
+Now, let's translate those instructions into an equivalent Dockerfile!
 
 ### 1. Install the correct version of Node.
 
@@ -47,6 +49,8 @@ Now, in our Dockerfile, we use the `FROM` instruction to tell it what image to u
 There we go, the first line of our Dockerfile, done!
 
 ### 2. Copy our program's files over.
-After specifying our base image, we must next specify where we want to make our changes. At this point, you can think of this as essentially being in a terminal that is, by default, at the root directory `/` of our base image. There are already a lot of other folders here, so lets create a new one just for our project called `/app`, and then switch into that. In a regular command line, that would look like two commands: `mkdir /app` to make the directory, and `cd /app` to navigate into the directory. In a Dockerfile, it's combined into one instruction called `WORKDIR`, so we would do the following:
+After specifying our base image, we must next specify where we want to make our changes. At this point, you can think of this as essentially being in a terminal that is, by default, at the root directory `/` of our base image. There are already a lot of other folders here, so lets create a new one just for our project called `/app`, and then switch into that. In a regular command line, that would look like two commands: `mkdir /app` to make the directory, and `cd /app` to navigate into the directory. In a Dockerfile, it's combined into one instruction called `WORKDIR`, so we would add the following line:
 
     WORKDIR /app
+
+Next up, we need to copy the files over themselves. To do this, we use the `COPY` instruction, with argument
