@@ -6,7 +6,7 @@
 "So what's this whole Docker thing anyways, and is it even really that important?"
 Fair question, and while the answer to that first part is a little complicated, the answer to the second part is definitely **YES**, it is that important!
 
-Docker is a key technology, both in this course and out in industry, and is used heavily by many companies. Within this course, it's what powers tools including Dev Containers and Kubernetes/OpenShift, so understanding Docker is key to understanding them, too. In industry, even if you aren't using these exact technologies, you'll often still find Docker being used in some way or another, and knowing how to use it will come in handy.
+Docker is a key technology, both to this course and out in industry, and is used heavily by many companies. Within this course, it's what powers tools including Dev Containers and Kubernetes/OpenShift, so understanding Docker is key to understanding them, too. In industry, even if you aren't using these exact technologies, you'll often still find Docker being used in some way or another, and knowing how to use it will come in handy.
 
 Anyways, now that you're (hopefully) convinced, let's dive in!
 
