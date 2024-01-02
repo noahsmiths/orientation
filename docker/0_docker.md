@@ -37,38 +37,50 @@ For the sake of this example, there exists a repository with a sample program al
 Now, let's translate those instructions into an equivalent Dockerfile!
 
 ### 1. Install the correct version of Node.
-
 Now, you might be thinking: If we're building this image from the ground up, what's our starting point? What are we even building from? The answer is a **base image**! An image is just a snapshot of some environment, so what we can do is take one that already exists as a base, add on our changes, and then we'll have an image that does exactly what we need. Luckily for us, the good people over at Node made us an image conveniently named `node` that includes everything you need to run a Node program. Specifically, we want to use version 20, so we can append it to the name with a semicolon, like this `node:20`.
 
 Now, in our Dockerfile, we use the `FROM` instruction to tell Docker what image to use as the base, like this:
 
-    FROM node:20
+```dockerfile
+FROM node:20
+```
 
 There we go, the first line of our Dockerfile, done!
 
 ### 2. Copy our program's files over.
 After specifying our base image, we must next specify where we want to make our changes. At this point, you can think of this as essentially being in a terminal that is, by default, at the root directory `/` of our base image. There are already a lot of other folders here, so lets create a new one just for our project called `/app`, and then switch into that. In a regular command line, that would look like two commands: `mkdir /app` to make the directory, and `cd /app` to navigate into the directory. In a Dockerfile, it's combined into one instruction called `WORKDIR`, so we would add the following line:
 
-    WORKDIR /app
+```dockerfile
+WORKDIR /app
+```
 
-Next up, we need to copy the files over themselves. To do this, we use the `COPY` instruction, which takes two arguments: The source directory which is a path on our computer, and the target directory which is a path in our image. Our source directory is specified relative to where the Dockerfile is located, and since it's in the same directory as the rest of our program files, we can just use `.` for the path. Similarly, because we're already located in `/app` in our image, we can specify the current directory as the target with `.` Combined, this results in
+Next up, we need to copy the files over themselves. To do this, we use the `COPY` instruction, which takes two arguments: The source directory which is a path on our computer, and the target directory which is a path in our image. Our source directory is specified relative to where the Dockerfile is located, and since it's in the same directory as the rest of our program files, we can just use `.` for the path. Similarly, because we're already located in `/app` in our image, we can specify the current directory as the target with `.` Combined, this results in the following:
 
-    COPY . .
+```dockerfile
+COPY . .
+```
+
 Great! Now, we have all of our source files in our image.
 
 ### 3. Install our dependencies.
 With projects in Node, all of our dependencies are stored in the `package.json` file, so all we need to do is run the command `npm install` in the same directory and our program's dependencies will be taken care of. The instruction we use in our Dockerfile is `RUN`, followed by the command. Go ahead and add this into your Dockerfile.
 
-    RUN npm install
+```dockerfile
+RUN npm install
+```
 
 But wait, there's more! While it's not included in our `package.json`, we'll also need to install typescript so we can compile our program. We can do that with the command `npm install typescript -g` (the `-g` flag tells npm to install it globally so we can use it anywhere). Add this in to your Dockerfile, too.
 
-    RUN npm install typescript -g
+```dockerfile
+RUN npm install typescript -g
+```
 
 ### 4. Building our Program.
 To build a TypeScript program, we'll need to invoke the typescript compiler we just installed through the `tsc` command. Similarly to before, we just use the `RUN` instruction again.
 
-    RUN tsc
+```dockerfile
+RUN tsc
+```
 
 This will produce a file called `index.js` in our image, which is a compiled version of the `index.ts` file and ready for execution.
 After this command, our files will be set up exactly as we need them, and we won't need any more configuration on that front.
@@ -79,7 +91,9 @@ You're correct! Images themselves don't run, they're run by containers. However,
 
 Just as we'd run our program with `node index.js` on our computer, we'll specify the same in the Dockerfile.
 
-    CMD node index.js
+```dockerfile
+CMD node index.js
+```
 
 And there you have it, your Dockerfile is done and you're ready to build your image!
 
