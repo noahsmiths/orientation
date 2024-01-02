@@ -89,7 +89,7 @@ Wait, I thought containers ran, not images! Why is this included in our Dockerfi
 
 You're correct! Images themselves don't run, they're run by containers. However, when we tell create a container to run an image, it needs to know *what to run*. That's what we're going to specify here. The Dockerfile instruction for this is called `CMD` for "command", and it'll be the first thing the container runs when we create it. As such, **there can only be one `CMD` instruction in a Dockerfile**.
 
-Just as we'd run our program with `node index.js` on our computer, we'll specify the same in the Dockerfile.
+Syntatically, it's just like the `RUN` instruction, so just as we'd run our program with `node index.js` on our computer, we'll specify the same in the Dockerfile.
 
 ```dockerfile
 CMD node index.js
