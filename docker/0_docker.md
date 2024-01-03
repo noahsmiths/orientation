@@ -32,14 +32,16 @@ Going back to our previous scenario, let's lay out the exact steps we'd need to 
  4. Build our program.
  5. Run it.
 
-For the sake of this example, there exists a repository with a sample program already written linked [here](https://github.com/noahsmiths/Docker-Hello-World-Example). If you want to try Docker out and follow along, clone the repo and edit the included Dockerfile according to the following steps.
+For the sake of this example, there exists a repository with a sample program already written linked [here](https://github.com/noahsmiths/Docker-Hello-World-Example). If you want to try Docker out and follow along, make sure you've installed and started Docker Desktop, and that `docker` is accessible from your command line. Then, clone the repo and open the included Dockerfile.
 
-Now, let's translate those instructions into an equivalent Dockerfile!
+Now, let's translate those steps into an equivalent Dockerfile!
 
 ## Dockerfile
 
 ### 1. Install the correct version of Node.
-Now, you might be thinking: If we're building this image from the ground up, what's our starting point? What are we even building from? The answer is a **base image**! An image is just a snapshot of some environment, so what we can do is take one that already exists as a base, add on our changes, and then we'll have an image that does exactly what we need. Luckily for us, the good people over at Node made us an image conveniently named `node` that includes everything you need to run a Node program. Specifically, we want to use version 20, so we can append it to the name with a semicolon, like this `node:20`.
+Now, you might be thinking: If we're building this image from the ground up, what's our starting point? What are we even building from?
+
+The answer is a **base image**! An image is just a snapshot of some environment, so what we can do is take one that already exists as a base, add on our changes, and then we'll have an image that does exactly what we need. Luckily for us, the good people over at Node made us an image conveniently named `node` that includes everything you need to run a Node program. Specifically, we want to use version 20, so we can append it to the name with a semicolon, like this `node:20`.
 
 Now, in our Dockerfile, we use the `FROM` instruction to tell Docker what image to use as the base, like this:
 
@@ -89,7 +91,7 @@ After this command, our files will be set up exactly as we need them, and we won
 ### 5. Run it.
 Wait, I thought containers ran, not images! Why is this included in our Dockerfile?
 
-You're correct! Images themselves don't run, they're run by containers. However, when we tell create a container to run an image, it needs to know *what to run*. That's what we're going to specify here. The Dockerfile instruction for this is called `CMD` for "command", and it'll be the first thing the container runs when we create it. As such, **there can only be one `CMD` instruction in a Dockerfile**.
+You're right! Images themselves don't run, they're run by containers. However, when we tell create a container to run an image, it needs to know *what to run*. That's what we're going to specify here. The Dockerfile instruction for this is called `CMD` for "command", and it'll be the first thing the container runs when we create it. As such, **there can only be one `CMD` instruction in a Dockerfile**.
 
 Syntatically, it's just like the `RUN` instruction, so just as we'd run our program with `node index.js` on our computer, we'll specify the same in the Dockerfile.
 
@@ -97,7 +99,7 @@ Syntatically, it's just like the `RUN` instruction, so just as we'd run our prog
 CMD node index.js
 ```
 
-Now, we're basically done. We can stop right here and our Dockerfile will function just fine. However, there's a final instruction that, while optional, is a good one to include when needed.
+Now, we're basically done. We can stop right here and our Dockerfile will function just fine. However, there's a final instruction that, while optional, is a good one to include when applicable.
 
 Specifically for this example, our server is going to listen on port `3000`. However, Docker has no idea about this unless we tell it explicitly that our application will use that port, which we can do with the `EXPOSE` instruction. This instruction's sole purpose is to tell Docker, "Hey, the program in this container is listening on port 3000," which can then be seen by anybody else who might use your image down the road. You can think of this instruction as more providing some handy documentation than actually completing a task.
 
@@ -108,13 +110,13 @@ EXPOSE 3000
 And there you have it, your Dockerfile is done and you're ready to build your image!
 
 ## Building an Image
-Just a quick recap: We just finished the Dockerfile stage, meaning we can now build an image from it. After that, we'll have a usable image from which we'll be able to start a container, and see our app in action!
+Just a quick recap: We just finished the Dockerfile stage, meaning we can now build an image from it. After that, we'll have a usable image from which we'll be able to start a container, and see our program in action!
 
-Luckily, at this point all that's left is a few commands. The first one we'll need is `docker build`, which will use our Dockerfile to create an useable Docker image. To do this, go to your terminal and make sure you're in the same directory as your Dockerfile.
+At this point, all we have left are docker commands. The first one we'll need is `docker build`, which will use our Dockerfile to create an useable Docker image. To do this, go to your terminal and make sure you're in the same directory as your Dockerfile.
 
 The `docker build` command only requires one argument: The directory containing our Dockerfile. Since we just navigated our terminal to the same directory as the Dockerfile, we can use `.` to denote our current directory.
 
-However, there are some other optional arguments we can pass, which will make our lives a lot easier down the road. For the sake of this example, we'll use the `--tag` argument, which allows us to specify a tag, or a name, for our image. The tag I'll use here is `my_server`.
+However, there are some other optional arguments we can pass, which will make our lives a lot easier down the road. For the sake of this example, we'll use the `--tag` flag, which allows us to specify a tag, or a name, for our image. The tag I'll use here is `my_server`.
 
 All of these together result in this command:
 
@@ -122,28 +124,46 @@ All of these together result in this command:
 docker build --tag my_server .
 ```
 
-Go ahead and run this, and you should be able to see some pretty interesting things. The first time you run it, this will probably take a minute or two as Docker will need to download the `node:20` base image. After that, though, you'll see Docker then execute your Dockerfile line by line all but stop before the `CMD` instruction. Remember, this happens because the `CMD` instruction is telling the container what to run, not the image.
+Go ahead and run this, and you should be able to see some pretty interesting things. The first time you run it, this will probably take a minute or two as Docker will need to download the `node:20` base image. After that, though, you'll see Docker execute your Dockerfile line by line but stop before the `CMD` instruction. Remember, this happens because the `CMD` instruction is telling the container what to run, not the image.
 
 You'll also notice a lot of strings that start with `sha256:` and have a long string of letters and numbers after them. These are called hashes, and are actually how Docker keeps track of images under the hood. Hopefully, this sounds familiar to you because this is very similar to how Git works! **Just as Git uses a hash to track every commit, every Docker image also has a unique hash. And, just as Git keeps a sort of "linked list" from commit to commit, so too does Docker with its images!**
 
-That's why we used the `--tag` option above. What a tag really allows us to do is to have a human-readable label reference a hash. Without it, we'd need to identify our image directly by its hash which is a very ugly mess of random characters. We've actually already seen and used a tag before, too! `node:20`, which we used for our base image, is actually just a tag itself that points to a hash of a publicly available image.
+That's why we used the `--tag` flag above. What a tag really allows us to do is to have a human-readable label reference a hash. Without it, we'd need to identify our image directly by its hash which is a very ugly mess of random characters. We've actually already seen and used a tag before, too! `node:20`, which we used for our base image, is actually just a tag itself that points to a hash of a publicly available image.
 
 Going back for a moment, now it should be clearer how our Dockerfile and build process actually work. Docker found the hash of our base image referenced by tag `node:20`, pulled that image, and then executed our Dockerfile line by line. **Each step of the Dockerfile actually created a new intermediate image with its own hash, called a layer**, which is what you saw during the build process. **After we're done with all of our layers, we create an output image from all those layers combined, which gets its own hash and is what the `my_server` tag references.**
 
-If you'd actually like to see all the Docker images on your system and their corresponding hashes, you can run `docker images` and look at the `IMAGE ID` column.
+If you'd actually like to see all the Docker images on your system and their corresponding hashes, you can run `docker images` in your terminal and look at the `IMAGE ID` column.
 
-If all of this seems like a lot at once, it's because it is. If you need to re-read it, make sure to focus on the bolded areas and get those down, and remember these key takeaways:
+If all of this seems like a lot at once, try re-reading this section with the following key ideas in mind:
 
 1. Docker keeps track of images by using a hash, just like Git. Tags are just human readable names that reference a hash.
 2. When images are built, it's done by executing each instruction of the Dockerfile in order.
 3. Each one of these instructions creates a new intermediate image called a layer, which also has a hash. Each layer also references the hash of the previous layer.
 4. This allows a linked list structure of layers, and all of these layers are combined into our final output image.
 
+### A quick note on layers
+One really nice part of having this structure to our images is that after a layer is created, unless a layer before it is changed, we can reuse it again when rebuilding our image. In fact, if you run the exact same build command you ran earlier (`docker build --tag my_server .`), you'll notice that it builds *way* faster than before. That's because Docker is smart enough to realize our Dockerfile didn't change at all, so it reused all the existing layers that it already created, and didn't need to make any of them from scratch again. Pretty useful!
+
 ## Starting a container
-Woohoo, you made it this far! Lucky for you, starting a container might be the easiest part of this whole thing.
+Woohoo, you made it this far! Luckily, running a container might be the easiest part of this whole thing.
 
-All it takes is one more command:
+For this, we'll be using a new command called `docker run`. It only requires a single argument: a tag or hash of an image. Since we built our image with the `my_server` tag, we can use that here.
 
-```dockerfile
+Last, but not least, we also need one optional argument. Remember how our server is running on port `3000` and we used the `EXPOSE` instruction to tell Docker earlier? Well, by default, even if Docker knows about a port, it's not accessible outside the container unless we otherwise specify when creating it. So here, we'll need to use the `-p` flag. This must be followed by a string in the format `"<host port>:<container port>"`, which will make the container port available on your machine at the host port. For this, we'll keep the ports the same and just do `"3000:3000"`.
 
+Now, combining that all we get the following.
+
+```bash
+docker run -p "3000:3000" my_server
 ```
+
+Go ahead and run that in your terminal and, if all went according to plan, you should see a message appear saying the server is listening on port 3000. If so, go ahead and go to http://localhost:3000 and you should see a message show up!
+
+Once you're satisfied with you Docker container and sure it works, you can easily shut it down by going to Docker Desktop and stopping it in the "Containers" section. The name of the container will be random, but under the "Image" column you should see it says `my_server`. Or, if you'd like a bit of a challenge, you can try to figure out how to stop it from the command line!
+
+## Conclusion
+Way to go, you made it to the end! Hopefully this documentation helped you become at least a little more comfortable with Docker and its inner workings. Like anything in this field, practice makes perfect, so I hope you'll continue to explore with Docker and try using it whenever you can! There are a lot more features that weren't covered here including things like `networks` and `volumes`, which are very powerful and worth understanding, too.
+
+Whatever your next steps are, good luck and thanks for reading!
+
+## The End... for now
