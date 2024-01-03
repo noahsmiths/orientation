@@ -36,7 +36,7 @@ For the sake of this example, there exists a repository with a sample program al
 
 Now, let's translate those steps into an equivalent Dockerfile!
 
-## Dockerfile
+## The Dockerfile
 
 ### 1. Install the correct version of Node.
 Now, you might be thinking: If we're building this image from the ground up, what's our starting point? What are we even building from?
