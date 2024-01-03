@@ -1,6 +1,6 @@
 # Docker from Scratch
 > Written by Noah Smith for COMP 423: Foundations of Software Engineering.
-> *Last Updated: 12/28/2023*
+> *Last Updated: 1/3/2024*
 
 ## Preface
 "So what's this whole Docker thing anyways, and is it even really that important?"
